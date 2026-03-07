@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">📊 Job Readiness Index</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register Student</a></li>
+                <li><a href="/skills">Enter Skills</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="form-container">
+            <div class="card">
+                <h1 class="section-title text-center">Register New Student</h1>
+                <p class="text-center" style="color: var(--text-light); margin-bottom: 2rem;">Add a student to the job readiness tracking system</p>
+
+                <form method="POST">
+                    <!-- Name Field -->
+                    <div class="form-group">
+                        <label for="name">Student Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                    </div>
+
+                    <!-- Department Field -->
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" id="department" name="department" placeholder="e.g., Computer Science" required>
+                    </div>
+
+                    <!-- CGPA Field -->
+                    <div class="form-group">
+                        <label for="cgpa">CGPA (out of 10)</label>
+                        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" placeholder="e.g., 8.50" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-block">Register Student</button>
+                </form>
+
+                <!-- Back Link -->
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="/" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

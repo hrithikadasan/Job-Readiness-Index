@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Skills</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">📊 Job Readiness Index</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register Student</a></li>
+                <li><a href="/skills">Enter Skills</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="form-container">
+            <div class="card">
+                <h1 class="section-title text-center">Enter Student Skills</h1>
+                <p class="text-center" style="color: var(--text-light); margin-bottom: 2rem;">Rate student skills across different dimensions (scale: 1-100)</p>
+
+                <form method="POST">
+                    <!-- Student Selection Field -->
+                    <div class="form-group">
+                        <label for="student_id">Select Student</label>
+                        <select id="student_id" name="student_id" required>
+                            <option value="">-- Choose a student --</option>
+                            {% for student in students %}
+                            <option value="{{student[0]}}">
+                                {{student[1]}} (ID: {{student[0]}})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Aptitude Field -->
+                    <div class="form-group">
+                        <label for="aptitude">Aptitude Score</label>
+                        <input type="number" id="aptitude" name="aptitude" min="1" max="100" placeholder="1-100" required>
+                    </div>
+
+                    <!-- Coding Field -->
+                    <div class="form-group">
+                        <label for="coding">Coding Score</label>
+                        <input type="number" id="coding" name="coding" min="1" max="100" placeholder="1-100" required>
+                    </div>
+
+                    <!-- Communication Field -->
+                    <div class="form-group">
+                        <label for="communication">Communication Score</label>
+                        <input type="number" id="communication" name="communication" min="1" max="100" placeholder="1-100" required>
+                    </div>
+
+                    <!-- Projects Field -->
+                    <div class="form-group">
+                        <label for="projects">Projects Score</label>
+                        <input type="number" id="projects" name="projects" min="1" max="100" placeholder="1-100" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-block">Calculate Readiness Score</button>
+                </form>
+
+                <!-- Back Link -->
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="/" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

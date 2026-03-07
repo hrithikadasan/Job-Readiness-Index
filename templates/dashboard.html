@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">📊 Job Readiness Index</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register Student</a></li>
+                <li><a href="/skills">Enter Skills</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="card">
+            <h1 class="section-title text-center">Student Job Readiness Dashboard</h1>
+            <p class="text-center" style="color: var(--text-light); margin-bottom: 2rem;">Overview of all students' job readiness assessments</p>
+
+            {% if results %}
+                <!-- Table Container -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student Name</th>
+                                <th>Readiness Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in results %}
+                            <tr>
+                                <td><strong>#{{student[0]}}</strong></td>
+                                <td>{{student[1]}}</td>
+                                <td>
+                                    <strong style="font-size: 1.1rem;">{{student[2]}}</strong>
+                                    <span style="color: var(--text-light); font-size: 0.85rem;"> / 100</span>
+                                </td>
+                                <td>
+                                    {% if student[3] == "Job Ready" %}
+                                        <span class="badge badge-success">✓ {{student[3]}}</span>
+                                    {% elif student[3] == "Almost Ready" %}
+                                        <span class="badge badge-warning">⚠ {{student[3]}}</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">✕ {{student[3]}}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary Stats -->
+                <div class="action-grid mt-3">
+                    <!-- Counting Job Ready students -->
+                    {% set ready_list = [] %}
+                    {% for student in results %}
+                        {% if student[3] == "Job Ready" %}
+                            {% set _ = ready_list.append(1) %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Counting Almost Ready students -->
+                    {% set almost_list = [] %}
+                    {% for student in results %}
+                        {% if student[3] == "Almost Ready" %}
+                            {% set _ = almost_list.append(1) %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Counting Needs Improvement students -->
+                    {% set needs_list = [] %}
+                    {% for student in results %}
+                        {% if student[3] == "Needs Improvement" %}
+                            {% set _ = needs_list.append(1) %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="action-card">
+                        <h3 style="color: var(--accent-color);">✓ Job Ready</h3>
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--accent-color);">{{ready_list | length}}</p>
+                        <p style="color: var(--text-light);">students</p>
+                    </div>
+
+                    <div class="action-card">
+                        <h3 style="color: var(--warning-color);">⚠ Almost Ready</h3>
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--warning-color);">{{almost_list | length}}</p>
+                        <p style="color: var(--text-light);">students</p>
+                    </div>
+
+                    <div class="action-card">
+                        <h3 style="color: var(--danger-color);">✕ Needs Improvement</h3>
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--danger-color);">{{needs_list | length}}</p>
+                        <p style="color: var(--text-light);">students</p>
+                    </div>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 3rem 0; color: var(--text-light);">
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">📊 No student data available yet</p>
+                    <p>Register students and enter their skills to see the dashboard.</p>
+                </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div style="text-align: center; gap: 1rem; display: flex; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
+                <a href="/register" class="btn btn-primary">Register New Student</a>
+                <a href="/skills" class="btn btn-primary">Enter Skills</a>
+                <a href="/" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Readiness Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">📊 Job Readiness Index</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register Student</a></li>
+                <li><a href="/skills">Enter Skills</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="result-container">
+            <!-- Student Name Card -->
+            <div class="result-card">
+                <h2>Assessment Result</h2>
+                <p style="font-size: 1.1rem;">Student Name</p>
+                <h3 style="color: var(--secondary-color); font-size: 1.8rem; margin-bottom: 1.5rem;">{{ name }}</h3>
+            </div>
+
+            <!-- Score Display -->
+            <div class="score-display">
+                <div class="score-label">Overall Job Readiness Score</div>
+                <div class="score-value">{{ score }}</div>
+                <div class="score-unit">out of 100</div>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="result-card">
+                <p style="margin-bottom: 1rem;">Readiness Status</p>
+                {% if status == "Job Ready" %}
+                    <span class="badge badge-success" style="font-size: 1rem; padding: 0.75rem 1.5rem;">✓ {{ status }}</span>
+                {% elif status == "Almost Ready" %}
+                    <span class="badge badge-warning" style="font-size: 1rem; padding: 0.75rem 1.5rem;">⚠ {{ status }}</span>
+                {% else %}
+                    <span class="badge badge-danger" style="font-size: 1rem; padding: 0.75rem 1.5rem;">✕ {{ status }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Recommendation Card -->
+            <div class="result-card">
+                {% if status == "Job Ready" %}
+                    <h3 style="color: var(--accent-color); margin-bottom: 1rem;">🎉 Excellent Performance!</h3>
+                    <p>The student demonstrates strong job readiness across all dimensions and is well-prepared for job placements.</p>
+                {% elif status == "Almost Ready" %}
+                    <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📈 Nearly There!</h3>
+                    <p>The student shows good potential but should focus on improving specific skill areas for better job readiness.</p>
+                {% else %}
+                    <h3 style="color: var(--danger-color); margin-bottom: 1rem;">💪 Keep Improving</h3>
+                    <p>The student would benefit from focused skill development. Consider additional training in key areas.</p>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="text-align: center; gap: 1rem; display: flex; flex-direction: column;">
+                <a href="/skills" class="btn btn-primary">Enter Skills for Another Student</a>
+                <a href="/dashboard" class="btn btn-secondary">View Full Dashboard</a>
+                <a href="/" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

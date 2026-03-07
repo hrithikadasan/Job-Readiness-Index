@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Readiness Index</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">📊 Job Readiness Index</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/register">Register Student</a></li>
+                <li><a href="/skills">Enter Skills</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Job Readiness Index System</h1>
+            <p>Evaluate student job readiness across multiple skill dimensions. Track progress and identify areas for improvement.</p>
+        </div>
+
+        <!-- Action Cards Grid -->
+        <div class="action-grid">
+            <!-- Register Card -->
+            <div class="action-card">
+                <h3>🎓 Register Student</h3>
+                <p>Add a new student to the system with their basic information</p>
+                <a href="/register" class="btn btn-primary btn-block">Register Now</a>
+            </div>
+
+            <!-- Enter Skills Card -->
+            <div class="action-card">
+                <h3>⭐ Enter Skills</h3>
+                <p>Input skill ratings for a registered student across multiple dimensions</p>
+                <a href="/skills" class="btn btn-primary btn-block">Enter Skills</a>
+            </div>
+
+            <!-- View Dashboard Card -->
+            <div class="action-card">
+                <h3>📈 View Dashboard</h3>
+                <p>See comprehensive dashboard with all students' readiness scores</p>
+                <a href="/dashboard" class="btn btn-primary btn-block">View Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
