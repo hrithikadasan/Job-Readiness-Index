@@ -28,6 +28,59 @@
                 <h1 class="section-title text-center">Enter Student Skills</h1>
                 <p class="text-center" style="color: var(--text-light); margin-bottom: 2rem;">Rate student skills across different dimensions (scale: 1-100)</p>
 
+                <!-- Collapsible Scoring Guide Section -->
+                <div class="guide-section">
+                    <button type="button" class="guide-toggle" id="guideToggle">
+                        <span class="guide-toggle-icon">+</span>
+                        <span class="guide-toggle-text">How to Enter Scores? (Scoring Guide)</span>
+                    </button>
+                    <div class="guide-content" id="guideContent" style="display: none;">
+                        <div class="guide-item">
+                            <h3 class="guide-item-title">📊 Aptitude Score (1–100)</h3>
+                            <p class="guide-description">Measures logical reasoning and problem-solving ability.</p>
+                            <ul class="guide-levels">
+                                <li><span class="level-range">80–100:</span> Excellent reasoning skills</li>
+                                <li><span class="level-range">60–79:</span> Good logical ability</li>
+                                <li><span class="level-range">40–59:</span> Average</li>
+                                <li><span class="level-range">Below 40:</span> Needs improvement</li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-item">
+                            <h3 class="guide-item-title">💻 Coding Score (1–100)</h3>
+                            <p class="guide-description">Measures programming ability and technical skills.</p>
+                            <ul class="guide-levels">
+                                <li><span class="level-range">80–100:</span> Can build programs independently and solve coding problems</li>
+                                <li><span class="level-range">60–79:</span> Good programming knowledge with minor help</li>
+                                <li><span class="level-range">40–59:</span> Basic coding understanding</li>
+                                <li><span class="level-range">Below 40:</span> Beginner level</li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-item">
+                            <h3 class="guide-item-title">🗣️ Communication Score (1–100)</h3>
+                            <p class="guide-description">Measures speaking, presentation, and teamwork ability.</p>
+                            <ul class="guide-levels">
+                                <li><span class="level-range">80–100:</span> Excellent communication and presentation skills</li>
+                                <li><span class="level-range">60–79:</span> Good communication</li>
+                                <li><span class="level-range">40–59:</span> Average speaking ability</li>
+                                <li><span class="level-range">Below 40:</span> Needs improvement</li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-item">
+                            <h3 class="guide-item-title">📁 Projects Score (1–100)</h3>
+                            <p class="guide-description">Measures practical project experience.</p>
+                            <ul class="guide-levels">
+                                <li><span class="level-range">80–100:</span> Multiple strong or complex projects</li>
+                                <li><span class="level-range">60–79:</span> Some good projects completed</li>
+                                <li><span class="level-range">40–59:</span> Basic academic projects</li>
+                                <li><span class="level-range">Below 40:</span> Very limited project work</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <form method="POST">
                     <!-- Student Selection Field -->
                     <div class="form-group">
@@ -44,25 +97,37 @@
 
                     <!-- Aptitude Field -->
                     <div class="form-group">
-                        <label for="aptitude">Aptitude Score</label>
+                        <label for="aptitude">
+                            Aptitude Score
+                            <span class="tooltip-icon" title="Measures logical reasoning and problem-solving ability (1-100)">?</span>
+                        </label>
                         <input type="number" id="aptitude" name="aptitude" min="1" max="100" placeholder="1-100" required>
                     </div>
 
                     <!-- Coding Field -->
                     <div class="form-group">
-                        <label for="coding">Coding Score</label>
+                        <label for="coding">
+                            Coding Score
+                            <span class="tooltip-icon" title="Measures programming ability and technical skills (1-100)">?</span>
+                        </label>
                         <input type="number" id="coding" name="coding" min="1" max="100" placeholder="1-100" required>
                     </div>
 
                     <!-- Communication Field -->
                     <div class="form-group">
-                        <label for="communication">Communication Score</label>
+                        <label for="communication">
+                            Communication Score
+                            <span class="tooltip-icon" title="Measures speaking, presentation, and teamwork ability (1-100)">?</span>
+                        </label>
                         <input type="number" id="communication" name="communication" min="1" max="100" placeholder="1-100" required>
                     </div>
 
                     <!-- Projects Field -->
                     <div class="form-group">
-                        <label for="projects">Projects Score</label>
+                        <label for="projects">
+                            Projects Score
+                            <span class="tooltip-icon" title="Measures practical project experience (1-100)">?</span>
+                        </label>
                         <input type="number" id="projects" name="projects" min="1" max="100" placeholder="1-100" required>
                     </div>
 
@@ -77,6 +142,22 @@
             </div>
         </div>
     </main>
+
+    <script>
+        // Toggle scoring guide
+        document.getElementById('guideToggle').addEventListener('click', function() {
+            const guideContent = document.getElementById('guideContent');
+            const toggleIcon = document.querySelector('.guide-toggle-icon');
+            
+            if (guideContent.style.display === 'none') {
+                guideContent.style.display = 'block';
+                toggleIcon.textContent = '−';
+            } else {
+                guideContent.style.display = 'none';
+                toggleIcon.textContent = '+';
+            }
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="footer">
