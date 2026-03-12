@@ -5,6 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Readiness Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Visualization Styles */
+        .readiness-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .readiness-level {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .readiness-level h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .readiness-level-badge {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            height: 30px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: width 0.6s ease;
+        }
+
+        .radar-chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .radar-chart-container h3 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .radar-canvas {
+            max-width: 100%;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .insight-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .insight-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .insight-card.strengths {
+            border-left-color: var(--accent-color);
+        }
+
+        .insight-card.weaknesses {
+            border-left-color: var(--warning-color);
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .skill-item:last-child {
+            border-bottom: none;
+        }
+
+        .skill-name {
+            flex: 1;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .skill-score {
+            background: var(--light-bg);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .recommendations-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .recommendations-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .recommendation-item {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .recommendation-icon {
+            min-width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 0.2rem;
+        }
+
+        .recommendation-text {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+    </style>
 </head>
 
 <body>
@@ -64,8 +236,155 @@
                 {% endif %}
             </div>
 
+            <!-- NEW VISUALIZATIONS SECTION -->
+            <div class="readiness-details">
+                <!-- Readiness Level Indicator with Progress Bar -->
+                <div class="readiness-level">
+                    <h3>Job Readiness Level</h3>
+                    <div class="readiness-level-badge">
+                        {% if score >= 80 %}
+                            Highly Job Ready
+                        {% elif score >= 60 %}
+                            Moderately Job Ready
+                        {% elif score >= 40 %}
+                            Needs Improvement
+                        {% else %}
+                            Not Job Ready
+                        {% endif %}
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: {{ score }}%;" id="progressBar">
+                            {{ score }}%
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; opacity: 0.9;">Score: <strong>{{ score }}/100</strong></p>
+                </div>
+
+                <!-- Skill Visualization - Radar Chart -->
+                <div class="radar-chart-container">
+                    <h3>Skill Assessment Radar</h3>
+                    <canvas id="skillRadarChart" class="radar-canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Skill Strengths and Weakness Section -->
+            <div class="insights-grid">
+                <!-- Strengths Card -->
+                <div class="insight-card strengths">
+                    <h4>💪 Your Strengths</h4>
+                    <div id="strengthsList">
+                        {% set strengths = [] %}
+                        {% if aptitude >= 70 %}
+                            {% set _ = strengths.append(('Aptitude', aptitude)) %}
+                        {% endif %}
+                        {% if coding >= 70 %}
+                            {% set _ = strengths.append(('Coding', coding)) %}
+                        {% endif %}
+                        {% if communication >= 70 %}
+                            {% set _ = strengths.append(('Communication', communication)) %}
+                        {% endif %}
+                        {% if projects >= 70 %}
+                            {% set _ = strengths.append(('Projects', projects)) %}
+                        {% endif %}
+                        
+                        {% if strengths %}
+                            {% for skill_name, score in strengths %}
+                                <div class="skill-item">
+                                    <span class="skill-name">{{ skill_name }}</span>
+                                    <span class="skill-score">{{ score }}/100</span>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p style="color: var(--text-light); font-style: italic;">No skills above 70 yet. Keep improving!</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Areas to Improve Card -->
+                <div class="insight-card weaknesses">
+                    <h4>📈 Areas to Improve</h4>
+                    <div id="weaknessesList">
+                        {% set weaknesses = [] %}
+                        {% if aptitude < 60 %}
+                            {% set _ = weaknesses.append(('Aptitude', aptitude)) %}
+                        {% endif %}
+                        {% if coding < 60 %}
+                            {% set _ = weaknesses.append(('Coding', coding)) %}
+                        {% endif %}
+                        {% if communication < 60 %}
+                            {% set _ = weaknesses.append(('Communication', communication)) %}
+                        {% endif %}
+                        {% if projects < 60 %}
+                            {% set _ = weaknesses.append(('Projects', projects)) %}
+                        {% endif %}
+
+                        {% if weaknesses %}
+                            {% for skill_name, score in weaknesses %}
+                                <div class="skill-item">
+                                    <span class="skill-name">{{ skill_name }}</span>
+                                    <span class="skill-score">{{ score }}/100</span>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p style="color: var(--text-light); font-style: italic;">Great! All skills are above 60!</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Improvement Recommendations -->
+            <div class="recommendations-card">
+                <h4>🎯 Personalized Recommendations</h4>
+                <div id="recommendationsList">
+                    {% set has_recommendations = false %}
+                    {% if coding < 60 %}
+                        {% set has_recommendations = true %}
+                        <div class="recommendation-item">
+                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-text">
+                                <strong>Coding Skills:</strong> Focus on practicing coding problems on platforms like LeetCode and HackerRank. Build practical projects to strengthen your programming fundamentals.
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if communication < 60 %}
+                        {% set has_recommendations = true %}
+                        <div class="recommendation-item">
+                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-text">
+                                <strong>Communication Skills:</strong> Prepare for interviews through mock sessions, practice presentations, and work on articulating technical concepts clearly.
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if aptitude < 60 %}
+                        {% set has_recommendations = true %}
+                        <div class="recommendation-item">
+                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-text">
+                                <strong>Aptitude Skills:</strong> Enhance logical reasoning through practice, solve puzzles, and take aptitude tests regularly to improve quantitative and analytical skills.
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if projects < 60 %}
+                        {% set has_recommendations = true %}
+                        <div class="recommendation-item">
+                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-text">
+                                <strong>Project Work:</strong> Build more practical, real-world projects. Focus on end-to-end project development from concept to deployment.
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if not has_recommendations %}
+                        <p style="color: var(--text-light); font-style: italic;">Excellent work! All your skills are strong. Continue to maintain and improve further!</p>
+                    {% endif %}
+                </div>
+            </div>
+
             <!-- Action Buttons -->
-            <div style="text-align: center; gap: 1rem; display: flex; flex-direction: column;">
+            <div style="text-align: center; gap: 1rem; display: flex; flex-direction: column; margin-top: 2rem;">
                 <a href="/skills" class="btn btn-primary">Enter Skills for Another Student</a>
                 <a href="/dashboard" class="btn btn-secondary">View Full Dashboard</a>
                 <a href="/" class="btn btn-secondary">Back to Home</a>
@@ -77,5 +396,86 @@
     <footer class="footer">
         <p>&copy; 2026 Job Readiness Index System. All rights reserved.</p>
     </footer>
+
+    <!-- Chart.js Radar Chart Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Radar Chart Configuration
+            const ctx = document.getElementById('skillRadarChart').getContext('2d');
+            const skillRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Aptitude', 'Coding', 'Communication', 'Projects'],
+                    datasets: [{
+                        label: 'Skill Scores',
+                        data: [{{ aptitude }}, {{ coding }}, {{ communication }}, {{ projects }}],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                color: '#6b7280',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(229, 231, 235, 0.5)'
+                            },
+                            pointLabels: {
+                                color: '#1f2937',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#1f2937',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 58, 138, 0.8)',
+                            padding: 12,
+                            titleFont: { size: 13, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+
+            // Animate Progress Bar
+            const progressBar = document.getElementById('progressBar');
+            setTimeout(() => {
+                progressBar.style.width = '{{ score }}%';
+            }, 100);
+        });
+    </script>
 </body>
 </html>

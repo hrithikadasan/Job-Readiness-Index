@@ -116,7 +116,11 @@ def result(student_id):
         "result.html",
         name=name,
         score=round(score,2),
-        status=status
+        status=status,
+        aptitude=aptitude,
+        coding=coding,
+        communication=communication,
+        projects=projects
     )
 
 
