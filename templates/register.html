@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -43,8 +44,8 @@
 
                     <!-- CGPA Field -->
                     <div class="form-group">
-                        <label for="cgpa">CGPA (out of 10)</label>
-                        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" placeholder="e.g., 8.50" required>
+                        <label for="cgpa">CGPA</label>
+                        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="4" placeholder="e.g., 3.75" required>
                     </div>
 
                     <!-- Submit Button -->

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Readiness Result</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -259,9 +260,9 @@
         }
 
         .recommendation-icon {
-            min-width: 32px;
-            width: 32px;
-            height: 32px;
+            min-width: 36px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             color: white;
             border-radius: 50%;
@@ -272,6 +273,10 @@
             font-weight: 800;
             flex-shrink: 0;
             box-shadow: var(--shadow);
+        }
+
+        .recommendation-icon i {
+            font-size: 0.9rem;
         }
 
         .recommendation-text {
@@ -399,7 +404,7 @@
             <div class="insights-grid">
                 <!-- Strengths Card -->
                 <div class="insight-card strengths">
-                    <h4>💪 Your Strengths</h4>
+                    <h4><i class="fas fa-fire"></i> Your Strengths</h4>
                     <div id="strengthsList">
                         {% set strengths = [] %}
                         {% if aptitude >= 70 %}
@@ -430,7 +435,7 @@
 
                 <!-- Areas to Improve Card -->
                 <div class="insight-card weaknesses">
-                    <h4>📈 Areas to Improve</h4>
+                    <h4><i class="fas fa-chart-bar"></i> Areas to Improve</h4>
                     <div id="weaknessesList">
                         {% set weaknesses = [] %}
                         {% if aptitude < 60 %}
@@ -462,13 +467,15 @@
 
             <!-- Improvement Recommendations -->
             <div class="recommendations-card">
-                <h4>🎯 Personalized Recommendations</h4>
+                <h4><i class="fas fa-lightbulb"></i> Personalized Recommendations</h4>
                 <div id="recommendationsList">
                     {% set has_recommendations = false %}
                     {% if coding < 60 %}
                         {% set has_recommendations = true %}
                         <div class="recommendation-item">
-                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="recommendation-text">
                                 <strong>Coding Skills:</strong> Focus on practicing coding problems on platforms like LeetCode and HackerRank. Build practical projects to strengthen your programming fundamentals.
                             </div>
@@ -478,7 +485,9 @@
                     {% if communication < 60 %}
                         {% set has_recommendations = true %}
                         <div class="recommendation-item">
-                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="recommendation-text">
                                 <strong>Communication Skills:</strong> Prepare for interviews through mock sessions, practice presentations, and work on articulating technical concepts clearly.
                             </div>
@@ -488,7 +497,9 @@
                     {% if aptitude < 60 %}
                         {% set has_recommendations = true %}
                         <div class="recommendation-item">
-                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="recommendation-text">
                                 <strong>Aptitude Skills:</strong> Enhance logical reasoning through practice, solve puzzles, and take aptitude tests regularly to improve quantitative and analytical skills.
                             </div>
@@ -498,7 +509,9 @@
                     {% if projects < 60 %}
                         {% set has_recommendations = true %}
                         <div class="recommendation-item">
-                            <div class="recommendation-icon">✓</div>
+                            <div class="recommendation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="recommendation-text">
                                 <strong>Project Work:</strong> Build more practical, real-world projects. Focus on end-to-end project development from concept to deployment.
                             </div>
