@@ -10,171 +10,299 @@
         /* Visualization Styles */
         .readiness-details {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            animation: slideInUp 0.6s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .readiness-details {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
         }
 
         .readiness-level {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .readiness-level::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .readiness-level:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
         .readiness-level h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.95;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
         }
 
         .readiness-level-badge {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 1rem 0;
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin: 1.5rem 0;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
         }
 
         .progress-bar-container {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            height: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 25px;
+            height: 36px;
             overflow: hidden;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            background: linear-gradient(90deg, var(--accent-color), #22c55e);
             width: 0%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: width 0.6s ease;
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3px;
         }
 
         .radar-chart-container {
             background: white;
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
             box-shadow: var(--shadow);
-            max-width: 500px;
-            margin: 0 auto;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .radar-chart-container:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
 
         .radar-chart-container h3 {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
 
         .radar-canvas {
             max-width: 100%;
+            width: 100%;
         }
 
         .insights-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            animation: slideInUp 0.6s ease;
         }
 
         @media (max-width: 768px) {
             .insights-grid {
                 grid-template-columns: 1fr;
+                gap: 1.75rem;
             }
         }
 
         .insight-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 2.5rem;
+            border-radius: 16px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--secondary-color);
+            border-left: 6px solid var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .insight-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
         }
 
         .insight-card h4 {
             color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
 
         .insight-card.strengths {
             border-left-color: var(--accent-color);
         }
 
+        .insight-card.strengths h4 {
+            color: var(--accent-color);
+        }
+
         .insight-card.weaknesses {
             border-left-color: var(--warning-color);
+        }
+
+        .insight-card.weaknesses h4 {
+            color: var(--warning-color);
         }
 
         .skill-item {
             display: flex;
             align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
+            justify-content: space-between;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--light-bg);
+            border-radius: 10px;
+            transition: var(--transition);
         }
 
         .skill-item:last-child {
-            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .skill-item:hover {
+            background: #e8eef7;
+            transform: translateX(4px);
         }
 
         .skill-name {
             flex: 1;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-dark);
+            font-size: 1rem;
         }
 
         .skill-score {
-            background: var(--light-bg);
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            font-weight: bold;
-            color: var(--secondary-color);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow);
         }
 
         .recommendations-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 2.5rem;
+            border-radius: 16px;
             box-shadow: var(--shadow);
-            margin-top: 2rem;
+            margin-top: 2.5rem;
+            transition: var(--transition);
+            animation: slideInUp 0.6s ease;
+        }
+
+        .recommendations-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
 
         .recommendations-card h4 {
             color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
 
         .recommendation-item {
-            padding: 0.75rem 0;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
+            gap: 1.25rem;
+            background: var(--light-bg);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-item:hover {
+            background: #e8eef7;
+            transform: translateX(4px);
         }
 
         .recommendation-icon {
-            min-width: 20px;
-            height: 20px;
-            background: var(--secondary-color);
+            min-width: 32px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-top: 0.2rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: var(--shadow);
         }
 
         .recommendation-text {
             color: var(--text-dark);
-            line-height: 1.5;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .recommendation-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
         }
     </style>
 </head>
@@ -199,8 +327,8 @@
             <!-- Student Name Card -->
             <div class="result-card">
                 <h2>Assessment Result</h2>
-                <p style="font-size: 1.1rem;">Student Name</p>
-                <h3 style="color: var(--secondary-color); font-size: 1.8rem; margin-bottom: 1.5rem;">{{ name }}</h3>
+                <p style="font-size: 1.05rem; font-weight: 600; letter-spacing: 0.3px;">Student Name</p>
+                <h3 style="color: var(--secondary-color); font-size: 2rem; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">{{ name }}</h3>
             </div>
 
             <!-- Score Display -->
@@ -212,27 +340,27 @@
 
             <!-- Status Badge -->
             <div class="result-card">
-                <p style="margin-bottom: 1rem;">Readiness Status</p>
+                <p style="margin-bottom: 1rem; font-weight: 600; font-size: 1.05rem; letter-spacing: 0.3px;">Readiness Status</p>
                 {% if status == "Job Ready" %}
-                    <span class="badge badge-success" style="font-size: 1rem; padding: 0.75rem 1.5rem;">✓ {{ status }}</span>
+                    <span class="badge badge-success" style="font-size: 1.1rem; padding: 1rem 2rem;">✓ {{ status }}</span>
                 {% elif status == "Almost Ready" %}
-                    <span class="badge badge-warning" style="font-size: 1rem; padding: 0.75rem 1.5rem;">⚠ {{ status }}</span>
+                    <span class="badge badge-warning" style="font-size: 1.1rem; padding: 1rem 2rem;">⚠ {{ status }}</span>
                 {% else %}
-                    <span class="badge badge-danger" style="font-size: 1rem; padding: 0.75rem 1.5rem;">✕ {{ status }}</span>
+                    <span class="badge badge-danger" style="font-size: 1.1rem; padding: 1rem 2rem;">✕ {{ status }}</span>
                 {% endif %}
             </div>
 
             <!-- Recommendation Card -->
             <div class="result-card">
                 {% if status == "Job Ready" %}
-                    <h3 style="color: var(--accent-color); margin-bottom: 1rem;">🎉 Excellent Performance!</h3>
-                    <p>The student demonstrates strong job readiness across all dimensions and is well-prepared for job placements.</p>
+                    <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem; font-weight: 800;">🎉 Excellent Performance!</h3>
+                    <p style="font-size: 1rem;">The student demonstrates strong job readiness across all dimensions and is well-prepared for job placements.</p>
                 {% elif status == "Almost Ready" %}
-                    <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📈 Nearly There!</h3>
-                    <p>The student shows good potential but should focus on improving specific skill areas for better job readiness.</p>
+                    <h3 style="color: var(--warning-color); margin-bottom: 1rem; font-size: 1.3rem; font-weight: 800;">📈 Nearly There!</h3>
+                    <p style="font-size: 1rem;">The student shows good potential but should focus on improving specific skill areas for better job readiness.</p>
                 {% else %}
-                    <h3 style="color: var(--danger-color); margin-bottom: 1rem;">💪 Keep Improving</h3>
-                    <p>The student would benefit from focused skill development. Consider additional training in key areas.</p>
+                    <h3 style="color: var(--danger-color); margin-bottom: 1rem; font-size: 1.3rem; font-weight: 800;">💪 Keep Improving</h3>
+                    <p style="font-size: 1rem;">The student would benefit from focused skill development. Consider additional training in key areas.</p>
                 {% endif %}
             </div>
 
@@ -384,10 +512,10 @@
             </div>
 
             <!-- Action Buttons -->
-            <div style="text-align: center; gap: 1rem; display: flex; flex-direction: column; margin-top: 2rem;">
-                <a href="/skills" class="btn btn-primary">Enter Skills for Another Student</a>
-                <a href="/dashboard" class="btn btn-secondary">View Full Dashboard</a>
-                <a href="/" class="btn btn-secondary">Back to Home</a>
+            <div style="text-align: center; gap: 1.2rem; display: flex; flex-direction: column; align-items: center; margin-top: 3rem;">
+                <a href="/skills" class="btn btn-primary" style="width: 100%; max-width: 450px;">📊 Enter Skills for Another Student</a>
+                <a href="/dashboard" class="btn btn-secondary" style="width: 100%; max-width: 450px;">📈 View Full Dashboard</a>
+                <a href="/" class="btn btn-secondary" style="width: 100%; max-width: 450px;">🏠 Back to Home</a>
             </div>
         </div>
     </main>
