@@ -44,8 +44,11 @@
 
                     <!-- CGPA Field -->
                     <div class="form-group">
-                        <label for="cgpa">CGPA</label>
-                        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="4" placeholder="e.g., 3.75" required>
+                        <label for="cgpa">CGPA (out of 10)</label>
+                        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" placeholder="Enter CGPA (0–10)" required
+                            oninvalid="this.setCustomValidity('Please enter a valid CGPA between 0 and 10')"
+                            oninput="this.setCustomValidity('')">
+                        <small style="color: #6b7280; display: block; margin-top: 0.4rem;">CGPA should be between 0 and 10</small>
                     </div>
 
                     <!-- Submit Button -->
