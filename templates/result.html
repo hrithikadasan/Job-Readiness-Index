@@ -290,6 +290,87 @@
             font-weight: 700;
         }
 
+        .analysis-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            animation: slideInUp 0.6s ease;
+        }
+
+        @media (max-width: 991px) {
+            .analysis-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analysis-card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border-left: 6px solid #a8b4ff;
+            transition: var(--transition);
+        }
+
+        .analysis-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .analysis-card.strengths { border-left-color: #16a34a; }
+        .analysis-card.improvements { border-left-color: #f97316; }
+        .analysis-card.recommendations { border-left-color: #2563eb; }
+
+        .analysis-card h4 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .analysis-card.strengths h4 { color: #16a34a; }
+        .analysis-card.improvements h4 { color: #f97316; }
+        .analysis-card.recommendations h4 { color: #2563eb; }
+
+        .analysis-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .analysis-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.96rem;
+        }
+
+        .analysis-item .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .analysis-item.check .icon { background: #16a34a; }
+        .analysis-item.warn .icon { background: #f97316; }
+
+        .recommendation-text-list {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            list-style: disc;
+            color: #334155;
+            font-weight: 500;
+        }
+
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -397,6 +478,25 @@
                 <div class="radar-chart-container">
                     <h3>Skill Assessment Radar</h3>
                     <canvas id="skillRadarChart" class="radar-canvas"></canvas>
+                </div>
+            </div>
+
+            <div id="skillScoreData" data-aptitude="{{ aptitude }}" data-coding="{{ coding }}" data-communication="{{ communication }}" data-projects="{{ projects }}" style="display:none;"></div>
+
+            <div class="analysis-cards-grid" id="analysisCardsContainer">
+                <div class="analysis-card strengths">
+                    <h4><i class="fas fa-check-circle"></i> Strengths</h4>
+                    <ul id="cardStrengthsList" class="analysis-list"></ul>
+                </div>
+
+                <div class="analysis-card improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Areas to Improve</h4>
+                    <ul id="cardWeaknessesList" class="analysis-list"></ul>
+                </div>
+
+                <div class="analysis-card recommendations">
+                    <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                    <ul id="cardRecommendationsList" class="recommendation-text-list"></ul>
                 </div>
             </div>
 
@@ -616,6 +716,82 @@
             setTimeout(() => {
                 progressBar.style.width = '{{ score }}%';
             }, 100);
+
+            // Analysis cards (Strengths / Areas to Improve / Recommendations)
+            const dataEl = document.getElementById('skillScoreData');
+            if (dataEl) {
+                const skills = {
+                    Aptitude: Number(dataEl.getAttribute('data-aptitude') || 0),
+                    Coding: Number(dataEl.getAttribute('data-coding') || 0),
+                    Communication: Number(dataEl.getAttribute('data-communication') || 0),
+                    Projects: Number(dataEl.getAttribute('data-projects') || 0)
+                };
+
+                const strengthsList = document.getElementById('cardStrengthsList');
+                const weaknessesList = document.getElementById('cardWeaknessesList');
+                const recommendationsList = document.getElementById('cardRecommendationsList');
+
+                const recommendationsMap = {
+                    Coding: 'Improve coding by practicing problems and building small projects.',
+                    Communication: 'Improve communication through presentations and mock interviews.',
+                    Aptitude: 'Practice logical reasoning and aptitude questions regularly.',
+                    Projects: 'Work on more real-world projects to gain practical experience.'
+                };
+
+                let hasStrength = false;
+                let hasWeakness = false;
+                let hasRecommendation = false;
+
+                Object.entries(skills).forEach(([name, value]) => {
+                    if (value >= 70) {
+                        hasStrength = true;
+                        const item = document.createElement('li');
+                        item.className = 'analysis-item check';
+                        item.innerHTML = '<span class="icon"><i class="fas fa-check"></i></span>' + name + ' (' + value + '/100)';
+                        strengthsList.appendChild(item);
+                    }
+
+                    if (value < 60) {
+                        hasWeakness = true;
+                        const item = document.createElement('li');
+                        item.className = 'analysis-item warn';
+                        item.innerHTML = '<span class="icon"><i class="fas fa-exclamation-triangle"></i></span>' + name + ' (' + value + '/100)';
+                        weaknessesList.appendChild(item);
+
+                        const recText = recommendationsMap[name];
+                        if (recText) {
+                            hasRecommendation = true;
+                            const recItem = document.createElement('li');
+                            recItem.textContent = recText;
+                            recommendationsList.appendChild(recItem);
+                        }
+                    }
+                });
+
+                if (!hasStrength) {
+                    const noItem = document.createElement('li');
+                    noItem.style.fontStyle = 'italic';
+                    noItem.style.color = '#64748b';
+                    noItem.textContent = 'No strengths (70+ yet). Keep improving!';
+                    strengthsList.appendChild(noItem);
+                }
+
+                if (!hasWeakness) {
+                    const noItem = document.createElement('li');
+                    noItem.style.fontStyle = 'italic';
+                    noItem.style.color = '#64748b';
+                    noItem.textContent = 'All skills are above 60. Great work!';
+                    weaknessesList.appendChild(noItem);
+                }
+
+                if (!hasRecommendation) {
+                    const noItem = document.createElement('li');
+                    noItem.style.fontStyle = 'italic';
+                    noItem.style.color = '#64748b';
+                    noItem.textContent = 'Excellent work! No immediate recommendations.';
+                    recommendationsList.appendChild(noItem);
+                }
+            }
         });
     </script>
 </body>
